@@ -151,8 +151,7 @@ public class SettingsActivity extends PreferenceActivity
             notifyHomeTimeZoneChanged();
         } else if (KEY_VOLUME_BUTTONS.equals(pref.getKey())) {
             final ListPreference listPref = (ListPreference) pref;
-            final int idx = listPref.findIndexOfValue((String) newValue);
-            listPref.setSummary(listPref.getEntries()[idx]);
+            updateActionSummary(listPref, (String) newValue, R.string.volume_buttons_summary);
         } else if (KEY_FLIP_ACTION.equals(pref.getKey())) {
             final ListPreference listPref = (ListPreference) pref;
             updateActionSummary(listPref, (String) newValue, R.string.flip_action_summary);
@@ -219,7 +218,7 @@ public class SettingsActivity extends PreferenceActivity
         listPref.setSummary(listPref.getEntry());
 
         listPref = (ListPreference) findPreference(KEY_VOLUME_BUTTONS);
-        listPref.setSummary(listPref.getEntry());
+        updateActionSummary(listPref, listPref.getValue(), R.string.volume_buttons_summary);
         listPref.setOnPreferenceChangeListener(this);
 
         listPref = (ListPreference) findPreference(KEY_FLIP_ACTION);
