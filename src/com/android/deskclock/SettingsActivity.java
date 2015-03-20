@@ -44,6 +44,11 @@ import java.util.TimeZone;
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
 
+    private static final int ALARM_STREAM_TYPE_BIT =
+            1 << AudioManager.STREAM_ALARM;
+
+    public static final String KEY_ALARM_IN_SILENT_MODE =
+            "alarm_in_silent_mode";
     public static final String KEY_ALARM_SNOOZE =
             "snooze_duration";
     public static final String KEY_VOLUME_BEHAVIOR =
@@ -98,6 +103,7 @@ public class SettingsActivity extends PreferenceActivity
         listPref.setEntries(mTimezones[1]);
         listPref.setSummary(listPref.getEntry());
         listPref.setOnPreferenceChangeListener(this);
+
     }
 
     @Override
@@ -158,10 +164,6 @@ public class SettingsActivity extends PreferenceActivity
         } else if (KEY_SHAKE_ACTION.equals(pref.getKey())) {
             final ListPreference listPref = (ListPreference) pref;
             updateActionSummary(listPref, (String) newValue, R.string.shake_action_summary);
-        } else if (KEY_SHOW_STATUS_BAR_ICON.equals(pref.getKey())) {
-            // Check if any alarms are active. If yes and
-            // we allow showing the alarm icon, the icon will be shown.
-            AlarmNotifications.updateStatusBarIcon(getApplicationContext(), (Boolean) newValue);
         }
         return true;
     }
@@ -228,9 +230,6 @@ public class SettingsActivity extends PreferenceActivity
         listPref = (ListPreference) findPreference(KEY_SHAKE_ACTION);
         updateActionSummary(listPref, listPref.getValue(), R.string.shake_action_summary);
         listPref.setOnPreferenceChangeListener(this);
-
-        CheckBoxPreference hideStatusbarIcon = (CheckBoxPreference) findPreference(KEY_SHOW_STATUS_BAR_ICON);
-        hideStatusbarIcon.setOnPreferenceChangeListener(this);
 
         SnoozeLengthDialog snoozePref = (SnoozeLengthDialog) findPreference(KEY_ALARM_SNOOZE);
         snoozePref.setSummary();
