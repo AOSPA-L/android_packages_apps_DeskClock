@@ -26,6 +26,8 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.SwitchPreference;
+import android.provider.Settings;
 import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,11 +46,8 @@ import java.util.TimeZone;
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
 
-    private static final int ALARM_STREAM_TYPE_BIT =
-            1 << AudioManager.STREAM_ALARM;
-
-    public static final String KEY_ALARM_IN_SILENT_MODE =
-            "alarm_in_silent_mode";
+    public static final String KEY_SHOW_STATUS_BAR_ICON =
+            "show_status_bar_icon";
     public static final String KEY_ALARM_SNOOZE =
             "snooze_duration";
     public static final String KEY_VOLUME_BEHAVIOR =

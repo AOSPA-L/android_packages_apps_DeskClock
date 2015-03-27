@@ -932,16 +932,18 @@ public class AlarmClockFragment extends DeskClockFragment implements
 
             final CompoundButton.OnCheckedChangeListener onOffListener =
                     new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton compoundButton,
-                                boolean checked) {
-                            if (checked != alarm.enabled) {
-                                setDigitalTimeAlpha(itemHolder, checked);
-                                alarm.enabled = checked;
-                                asyncUpdateAlarm(alarm, alarm.enabled);
-                            }
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                    if (checked != alarm.enabled) {
+                        if (!isAlarmExpanded(alarm)) {
+                            // Only toggle this when alarm is collapsed
+                            setDigitalTimeAlpha(itemHolder, checked);
                         }
-                    };
+                        alarm.enabled = checked;
+                        asyncUpdateAlarm(alarm, alarm.enabled);
+                    }
+                }
+            };
 
             if (mRepeatChecked.contains(alarm.id) || itemHolder.alarm.daysOfWeek.isRepeating()) {
                 itemHolder.tomorrowLabel.setVisibility(View.GONE);
@@ -1065,7 +1067,7 @@ public class AlarmClockFragment extends DeskClockFragment implements
             final int alarmHour = alarm.hour;
             final int currHour = now.get(Calendar.HOUR_OF_DAY);
             return alarmHour < currHour ||
-                        (alarmHour == currHour && alarm.minutes < now.get(Calendar.MINUTE));
+                        (alarmHour == currHour && alarm.minutes <= now.get(Calendar.MINUTE));
         }
 
         private void bindExpandArea(final ItemHolder itemHolder, final Alarm alarm) {
